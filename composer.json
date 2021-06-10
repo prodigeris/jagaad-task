@@ -4,6 +4,7 @@
         "vlucas/phpdotenv": "^5.3"
     },
     "require-dev": {
-        "symplify/easy-coding-standard": "^9.3"
+        "symplify/easy-coding-standard": "^9.3",
+        "phpstan/phpstan": "^0.12.89"
     }
 }
