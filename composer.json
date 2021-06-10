@@ -2,5 +2,8 @@
     "require": {
         "php": ">=7.4",
         "vlucas/phpdotenv": "^5.3"
+    },
+    "require-dev": {
+        "symplify/easy-coding-standard": "^9.3"
     }
 }
