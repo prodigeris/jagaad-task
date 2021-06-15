@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace JagaadTask\Components\Musement;
 
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use JagaadTask\Components\Musement\Dto\City;
 use JagaadTask\Components\Musement\Dto\CityCollection;
 use JagaadTask\Components\Musement\Transformer\ResponseTransformer;
 use Psr\Http\Message\ResponseInterface;
+use Test\Unit\Components\Musement\Exception\InvalidResponseException;
+use Test\Unit\Components\Musement\Exception\RequestFailedException;
 
 class Client
 {
@@ -27,6 +30,9 @@ class Client
 
     /**
      * @return CityCollection|City[]
+     *
+     * @throws InvalidResponseException
+     * @throws RequestFailedException
      */
     public function getCities(): CityCollection
     {
@@ -40,8 +46,15 @@ class Client
         return sprintf('%s/%s', $this->baseUri, $path);
     }
 
+    /**
+     * @throws RequestFailedException
+     */
     private function sendRequest(string $method, string $path): ResponseInterface
     {
-        return $this->http->request($method, $this->getPath($path));
+        try {
+            return $this->http->request($method, $this->getPath($path));
+        } catch (GuzzleException $e) {
+            throw new RequestFailedException($e->getMessage());
+        }
     }
 }

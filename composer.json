@@ -2,7 +2,8 @@
     "require": {
         "php": ">=7.4",
         "illuminate/collections": "^8.46",
-        "guzzlehttp/guzzle": "^7.0"
+        "guzzlehttp/guzzle": "^7.0",
+        "ext-json": "*"
     },
     "require-dev": {
         "symplify/easy-coding-standard": "^9.3",

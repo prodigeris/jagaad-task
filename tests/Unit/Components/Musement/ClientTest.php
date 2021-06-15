@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Test\Unit\Components\Musement;
 
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
 use JagaadTask\Components\Musement\Client;
 use JagaadTask\Components\Musement\Dto\City;
@@ -14,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+use Test\Unit\Components\Musement\Exception\RequestFailedException;
 
 class ClientTest extends TestCase
 {
@@ -73,6 +75,17 @@ class ClientTest extends TestCase
         $result = $this->client->getCities();
 
         self::assertSame($this->cities, $result);
+    }
+
+    public function testGetCitiesShouldThrowRequestFailedExceptionWhenHttpClientFails(): void
+    {
+        $this->http
+            ->request(Argument::cetera())
+            ->willThrow(RequestException::class);
+
+        $this->expectException(RequestFailedException::class);
+
+        $this->client->getCities();
     }
 
     protected function stubDefaults(): void
