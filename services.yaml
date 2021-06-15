@@ -5,7 +5,6 @@ services:
     autowire: true
     autoconfigure: true
   JagaadTask\Components\Musement\Client:
-    public: true
     arguments:
       $baseUri: '%MUSEMENT_BASE_URI%'
 
@@ -13,7 +12,6 @@ services:
   JagaadTask\Components\Musement\Factory\CityFactory:
 
   JagaadTask\Components\WeatherApi\Client:
-    public: true
     arguments:
       $baseUri: '%WEATHER_API_BASE_URI%'
       $key: '%WEATHER_API_KEY%'
@@ -22,4 +20,9 @@ services:
 
   GuzzleHttp\ClientInterface:
     class: GuzzleHttp\Client
+
+  JagaadTask\Domain\City\UseCase\FetchWeatherForMusementCitiesUseCase:
+
+  JagaadTask\Infrastructure\Command\RunEntrypoint:
+    public: true
 

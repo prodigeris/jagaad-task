@@ -3,6 +3,7 @@
 
 declare(strict_types=1);
 
+use JagaadTask\Infrastructure\Command\RunEntrypoint;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -16,3 +17,6 @@ $loader->load(__DIR__ . '/../services.yaml');
 
 
 $containerBuilder->compile();
+
+$entrypoint = $containerBuilder->get(RunEntrypoint::class);
+$entrypoint->run();
