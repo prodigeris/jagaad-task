@@ -6,12 +6,20 @@ namespace JagaadTask\Components\Musement\Transformer;
 
 use JagaadTask\Components\Musement\Dto\City;
 use JagaadTask\Components\Musement\Dto\CityCollection;
+use JagaadTask\Components\Musement\Factory\CityFactory;
 use JsonException;
 use Psr\Http\Message\ResponseInterface;
 use Test\Unit\Components\Musement\Exception\InvalidResponseException;
 
 class ResponseTransformer
 {
+    private CityFactory $cityFactory;
+
+    public function __construct(CityFactory $cityFactory)
+    {
+        $this->cityFactory = $cityFactory;
+    }
+
     /**
      * @return CityCollection|City[]
      *
@@ -19,9 +27,10 @@ class ResponseTransformer
      */
     public function transformCities(ResponseInterface $response): CityCollection
     {
-        $json = $this->decodeResponse($response);
+        $array = $this->decodeResponse($response);
+        $cities = array_map(fn (array $city) => $this->cityFactory->build(), $array);
 
-        return new CityCollection();
+        return new CityCollection(...$cities);
     }
 
     /**
