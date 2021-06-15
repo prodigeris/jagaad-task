@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Test\Unit\Components\Musement\Transformer;
 
 use GuzzleHttp\Psr7\Response;
+use JagaadTask\Components\Musement\Exception\InvalidResponseException;
 use JagaadTask\Components\Musement\Factory\CityFactory;
 use JagaadTask\Components\Musement\Transformer\ResponseTransformer;
 use JagaadTask\Components\Musement\ValueObject\City;
@@ -12,7 +13,6 @@ use JagaadTask\Components\Musement\ValueObject\CityCollection;
 use JsonException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Test\Unit\Components\Musement\Exception\InvalidResponseException;
 
 class ResponseTransformerTest extends TestCase
 {
@@ -67,7 +67,7 @@ class ResponseTransformerTest extends TestCase
 
         $result = $this->transformer->transformCities($response);
 
-        self::assertEquals($collection, $result);
+        self::assertSame($collection, $result);
     }
 
     /**

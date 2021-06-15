@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace JagaadTask\Components\Musement\Transformer;
 
+use JagaadTask\Components\Musement\Exception\InvalidResponseException;
 use JagaadTask\Components\Musement\Factory\CityFactory;
 use JagaadTask\Components\Musement\ValueObject\City;
 use JagaadTask\Components\Musement\ValueObject\CityCollection;
 use JsonException;
 use Psr\Http\Message\ResponseInterface;
-use Test\Unit\Components\Musement\Exception\InvalidResponseException;
 
 class ResponseTransformer
 {

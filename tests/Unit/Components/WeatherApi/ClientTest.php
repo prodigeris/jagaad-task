@@ -62,4 +62,18 @@ class ClientTest extends TestCase
             ->request(self::GET, self::FORECAST_ENDPOINT)
             ->shouldHaveBeenCalledOnce();
     }
+
+    public function testGetForecastReturnForecast(): void
+    {
+        $this->http
+            ->request(Argument::cetera())
+            ->willReturn(new Response());
+
+        $this->client->getForecast($this->coordinates, self::DAYS);
+
+        $this
+            ->http
+            ->request(self::GET, self::FORECAST_ENDPOINT)
+            ->shouldHaveBeenCalledOnce();
+    }
 }
