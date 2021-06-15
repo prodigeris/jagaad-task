@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JagaadTask\Components\Musement\Factory;
 
-use JagaadTask\Components\Musement\Dto\City;
+use JagaadTask\Components\Musement\ValueObject\City;
 
 class CityFactory
 {

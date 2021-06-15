@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JagaadTask\Components\Musement\Dto;
+namespace JagaadTask\Components\Musement\ValueObject;
 
 use Illuminate\Support\Collection;
 

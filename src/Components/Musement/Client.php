@@ -6,9 +6,9 @@ namespace JagaadTask\Components\Musement;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use JagaadTask\Components\Musement\Dto\City;
-use JagaadTask\Components\Musement\Dto\CityCollection;
 use JagaadTask\Components\Musement\Transformer\ResponseTransformer;
+use JagaadTask\Components\Musement\ValueObject\City;
+use JagaadTask\Components\Musement\ValueObject\CityCollection;
 use Psr\Http\Message\ResponseInterface;
 use Test\Unit\Components\Musement\Exception\InvalidResponseException;
 use Test\Unit\Components\Musement\Exception\RequestFailedException;

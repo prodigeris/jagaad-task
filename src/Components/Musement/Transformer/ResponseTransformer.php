@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace JagaadTask\Components\Musement\Transformer;
 
-use JagaadTask\Components\Musement\Dto\City;
-use JagaadTask\Components\Musement\Dto\CityCollection;
 use JagaadTask\Components\Musement\Factory\CityFactory;
+use JagaadTask\Components\Musement\ValueObject\City;
+use JagaadTask\Components\Musement\ValueObject\CityCollection;
 use JsonException;
 use Psr\Http\Message\ResponseInterface;
 use Test\Unit\Components\Musement\Exception\InvalidResponseException;
@@ -52,10 +52,17 @@ class ResponseTransformer
         }
     }
 
+    /**
+     * @param array|string[] $array
+     * @return array|City[]
+     */
     protected function buildCities(array $array): array
     {
-        return array_map(fn(array $city) => $this->cityFactory->build(
-            $city['id'], $city['name'], (float) $city['latitude'], (float) $city['longitude']
+        return array_map(fn (array $city) => $this->cityFactory->build(
+            $city['id'],
+            $city['name'],
+            (float) $city['latitude'],
+            (float) $city['longitude']
         ), $array);
     }
 }

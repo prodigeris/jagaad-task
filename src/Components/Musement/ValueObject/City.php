@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
-namespace JagaadTask\Components\Musement\Dto;
+namespace JagaadTask\Components\Musement\ValueObject;
 
 class City
 {
     private int $id;
+
     private string $name;
+
     private float $latitude;
+
     private float $longitude;
 
     public function __construct(int $id, string $name, float $latitude, float $longitude)

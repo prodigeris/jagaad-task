@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Test\Unit\Components\Musement\Transformer;
 
 use GuzzleHttp\Psr7\Response;
-use JagaadTask\Components\Musement\Dto\City;
-use JagaadTask\Components\Musement\Dto\CityCollection;
 use JagaadTask\Components\Musement\Factory\CityFactory;
 use JagaadTask\Components\Musement\Transformer\ResponseTransformer;
+use JagaadTask\Components\Musement\ValueObject\City;
+use JagaadTask\Components\Musement\ValueObject\CityCollection;
 use JsonException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -33,7 +33,6 @@ class ResponseTransformerTest extends TestCase
     private const LATITUDE_2 = 45.459;
 
     private const LONGITUDE_2 = 9.183;
-
 
     private ResponseTransformer $transformer;
 
