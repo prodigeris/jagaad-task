@@ -12,26 +12,26 @@ use JagaadTask\Components\Musement\Transformer\ResponseTransformer;
 use JsonException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Test\Unit\Components\Musement\Exception\InvalidResponseException;
 
 class ResponseTransformerTest extends TestCase
 {
     use ProphecyTrait;
 
+    private const ID = 1111;
+
+    private const ID2 = 2222;
+
     private ResponseTransformer $transformer;
 
-    /**
-     * @var CityFactory|ObjectProphecy
-     */
-    private $cityFactory;
+    private CityFactory $cityFactory;
 
     protected function setUp(): void
     {
-        $this->cityFactory = $this->prophesize(CityFactory::class);
+        $this->cityFactory = new CityFactory();
 
         $this->transformer = new ResponseTransformer(
-            $this->cityFactory->reveal(),
+            $this->cityFactory,
         );
     }
 
@@ -42,33 +42,45 @@ class ResponseTransformerTest extends TestCase
         $this->transformer->transformCities(new Response());
     }
 
-    public function testTransformCitiesBuildsCitiesWithCorrectDetails(): void
+    /**
+     * @dataProvider cityArrayDataProvider
+     * @param array|array[] $cities
+     * @param CityCollection|City[] $collection
+     *
+     * @throws JsonException
+     */
+    public function testTransformCitiesBuildsCitiesWithCorrectDetails(array $cities, CityCollection $collection): void
     {
-        $response = $this->buildExampleResponse();
-        $this->cityFactory->build()->willReturn(new City());
-
-        $this->transformer->transformCities($response);
-
-        $this->cityFactory
-            ->build()
-            ->shouldHaveBeenCalledTimes(2);
-    }
-
-    public function testTransformCitiesReturnsCityCollection(): void
-    {
-        $response = $this->buildExampleResponse();
-        $this->cityFactory->build()->willReturn(new City());
+        $response = $this->buildResponse($cities);
 
         $result = $this->transformer->transformCities($response);
 
-        self::assertEquals(new CityCollection(new City(), new City()), $result);
+        self::assertEquals($collection, $result);
     }
 
     /**
+     * @return array[]|array
+     */
+    public function cityArrayDataProvider(): array
+    {
+        return [
+            [
+                [[
+                    'id' => self::ID,
+                ], [
+                    'id' => self::ID2,
+                ]],
+                new CityCollection(new City(self::ID), new City(self::ID2)),
+            ],
+        ];
+    }
+
+    /**
+     * @param array|array[] $cities
      * @throws JsonException
      */
-    protected function buildExampleResponse(): Response
+    protected function buildResponse(array $cities): Response
     {
-        return new Response(200, [], json_encode([[], []], JSON_THROW_ON_ERROR));
+        return new Response(200, [], json_encode($cities, JSON_THROW_ON_ERROR));
     }
 }

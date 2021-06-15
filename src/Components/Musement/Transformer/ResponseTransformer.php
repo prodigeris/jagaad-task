@@ -28,7 +28,7 @@ class ResponseTransformer
     public function transformCities(ResponseInterface $response): CityCollection
     {
         $array = $this->decodeResponse($response);
-        $cities = array_map(fn (array $city) => $this->cityFactory->build(), $array);
+        $cities = array_map(fn (array $city) => $this->cityFactory->build($city['id']), $array);
 
         return new CityCollection(...$cities);
     }
