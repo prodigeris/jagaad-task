@@ -3,6 +3,16 @@
 
 declare(strict_types=1);
 
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+
 require __DIR__ . '/../vendor/autoload.php';
 
-print_r($_ENV);
+$containerBuilder = new ContainerBuilder(new ParameterBag($_ENV));
+$loader = new YamlFileLoader($containerBuilder, new FileLocator(__DIR__));
+$loader->load(__DIR__ . '/../services.yaml');
+
+
+$containerBuilder->compile();

@@ -1,9 +1,11 @@
 {
     "require": {
         "php": ">=7.4",
-        "illuminate/collections": "^8.46",
         "guzzlehttp/guzzle": "^7.0",
-        "ext-json": "*"
+        "ext-json": "*",
+        "symfony/dependency-injection": "^5.3",
+        "symfony/config": "^5.3",
+        "symfony/yaml": "^5.3"
     },
     "require-dev": {
         "symplify/easy-coding-standard": "^9.3",
