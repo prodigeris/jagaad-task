@@ -8,6 +8,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 use JagaadTask\Components\Musement\Client;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -41,10 +42,14 @@ class ClientTest extends TestCase
     public function testGetCitiesShouldSendRequestToCitiesEndpoint(): void
     {
         $this->http
-            ->request(self::GET, self::CITIES_ENDPOINT)
-            ->shouldBeCalledOnce()
+            ->request(Argument::cetera())
             ->willReturn(new Response());
 
         $this->client->getCities();
+
+        $this->http
+            ->request(self::GET, self::CITIES_ENDPOINT)
+            ->shouldHaveBeenCalledOnce()
+            ->willReturn(new Response());
     }
 }
