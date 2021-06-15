@@ -8,24 +8,27 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 use JagaadTask\Components\Musement\Client;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 
 class ClientTest extends TestCase
 {
+    use ProphecyTrait;
+
+    public const CITIES_ENDPOINT = 'https://musement.sandbox/cities';
+
+    public const GET = 'GET';
+
     private const BASE_URI = 'https://musement.sandbox';
-    const CITIES_ENDPOINT = 'https://musement.sandbox/cities';
-    const GET = 'GET';
 
     private Client $client;
+
     /**
      * @var ClientInterface|ObjectProphecy
      */
     private $http;
 
-    use ProphecyTrait;
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->http = $this->prophesize(ClientInterface::class);
 
@@ -35,10 +38,8 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function shouldSendRequestToCitiesEndpoint(): void
+
+    public function testShouldSendRequestToCitiesEndpoint(): void
     {
         $this->http
             ->request(self::GET, self::CITIES_ENDPOINT)

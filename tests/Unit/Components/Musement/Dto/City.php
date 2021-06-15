@@ -6,5 +6,4 @@ namespace Test\Unit\Components\Musement\Dto;
 
 class City
 {
-
 }
