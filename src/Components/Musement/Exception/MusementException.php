@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Unit\Components\Musement\Exception;
+namespace JagaadTask\Components\Musement\Exception;
 
 use RuntimeException;
 

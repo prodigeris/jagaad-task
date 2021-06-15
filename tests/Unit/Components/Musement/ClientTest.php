@@ -8,6 +8,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
 use JagaadTask\Components\Musement\Client;
+use JagaadTask\Components\Musement\Exception\RequestFailedException;
 use JagaadTask\Components\Musement\Transformer\ResponseTransformer;
 use JagaadTask\Components\Musement\ValueObject\City;
 use JagaadTask\Components\Musement\ValueObject\CityCollection;
@@ -15,7 +16,6 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use Test\Unit\Components\Musement\Exception\RequestFailedException;
 
 class ClientTest extends TestCase
 {
