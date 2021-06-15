@@ -9,12 +9,14 @@ use JagaadTask\Components\Musement\ValueObject\City;
 use JagaadTask\Components\Musement\ValueObject\CityCollection;
 use JagaadTask\Components\WeatherApi\Client as WeatherApi;
 use JagaadTask\Components\WeatherApi\Dto\Forecast;
+use JagaadTask\Components\WeatherApi\Dto\ForecastDay;
 use JagaadTask\Components\WeatherApi\ValueObject\Coordinates;
 use JagaadTask\Domain\City\UseCase\FetchWeatherForMusementCitiesUseCase;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+use Test\Unit\Domain\City\Dto\CityForecast;
 
 class FetchWeatherForMusementCitiesUseCaseTest extends TestCase
 {
@@ -38,6 +40,14 @@ class FetchWeatherForMusementCitiesUseCaseTest extends TestCase
 
     public const DAYS = 2;
 
+    public const DATE_1 = '2012-01-01';
+
+    public const DATE_2 = '2012-01-02';
+
+    public const CONDITION_1 = 'Sunny';
+
+    public const CONDITION_2 = 'Party cloudy';
+
     private FetchWeatherForMusementCitiesUseCase $useCase;
 
     /**
@@ -51,6 +61,16 @@ class FetchWeatherForMusementCitiesUseCaseTest extends TestCase
     private $musement;
 
     private CityCollection $cities;
+
+    /**
+     * @var Forecast[]
+     */
+    private array $forecast;
+
+    /**
+     * @var CityForecast[]
+     */
+    private array $cityForecasts;
 
     protected function setUp(): void
     {
@@ -66,31 +86,42 @@ class FetchWeatherForMusementCitiesUseCaseTest extends TestCase
             new City(self::ID_1, self::CITY_1, self::LATITUDE_1, self::LONGITUDE_1),
             new City(self::ID_2, self::CITY_2, self::LATITUDE_2, self::LONGITUDE_2),
         );
-    }
 
-    public function testShouldPassCoordinatesOfCitiesToWeatherApi(): void
-    {
+        $this->forecast = [
+            new Forecast(new ForecastDay(self::DATE_1, self::CONDITION_1), new ForecastDay(self::DATE_2, self::CONDITION_2)),
+            new Forecast(new ForecastDay(self::DATE_1, self::CONDITION_2), new ForecastDay(self::DATE_2, self::CONDITION_1)),
+        ];
+
+        $this->cityForecasts = [
+            new CityForecast(self::CITY_1, self::CONDITION_1, self::CONDITION_2),
+            new CityForecast(self::CITY_2, self::CONDITION_2, self::CONDITION_1),
+        ];
+
         $this->musement
             ->getCities()
             ->willReturn($this->cities);
-
-        $this->weatherApi->getForecast(Argument::cetera())
-            ->willReturn(new Forecast());
-
-        $this->useCase->execute();
-
-        $this->shouldCallGetForecastWithCoordinates(self::LATITUDE_1, self::LONGITUDE_1);
-        $this->shouldCallGetForecastWithCoordinates(self::LATITUDE_2, self::LONGITUDE_2);
     }
 
-    protected function shouldCallGetForecastWithCoordinates(float $latitude, float $longitude): void
+    public function testShouldReturnGeneratorOfCityWeather(): void
+    {
+        $this->stubGetForecast(self::LATITUDE_1, self::LONGITUDE_1, $this->forecast[0]);
+        $this->stubGetForecast(self::LATITUDE_2, self::LONGITUDE_2, $this->forecast[1]);
+
+        foreach ($this->useCase->execute() as $i => $actual) {
+            self::assertEquals($this->cityForecasts[$i], $actual);
+        }
+    }
+
+    protected function stubGetForecast(float $latitude, float $longitude, Forecast $forecast): void
     {
         $this->weatherApi
             ->getForecast(
-                Argument::that(
-                    fn (Coordinates $xy) => $xy->equals(new Coordinates($latitude, $longitude))
-                ),
-                self::DAYS
-            )->shouldHaveBeenCalledOnce();
+                Argument::that(fn (Coordinates $xy) => $xy->equals(new Coordinates(
+                    $latitude,
+                    $longitude
+                ))),
+                Argument::cetera()
+            )
+            ->willReturn($forecast);
     }
 }
