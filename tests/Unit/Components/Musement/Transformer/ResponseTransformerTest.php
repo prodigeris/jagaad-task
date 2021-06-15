@@ -6,6 +6,7 @@ namespace Test\Unit\Components\Musement\Transformer;
 
 use GuzzleHttp\Psr7\Response;
 use JagaadTask\Components\Musement\Dto\City;
+use JagaadTask\Components\Musement\Dto\CityCollection;
 use JagaadTask\Components\Musement\Factory\CityFactory;
 use JagaadTask\Components\Musement\Transformer\ResponseTransformer;
 use JsonException;
@@ -41,9 +42,6 @@ class ResponseTransformerTest extends TestCase
         $this->transformer->transformCities(new Response());
     }
 
-    /**
-     * @throws JsonException
-     */
     public function testTransformCitiesBuildsCitiesWithCorrectDetails(): void
     {
         $response = $this->buildExampleResponse();
@@ -54,6 +52,16 @@ class ResponseTransformerTest extends TestCase
         $this->cityFactory
             ->build()
             ->shouldHaveBeenCalledTimes(2);
+    }
+
+    public function testTransformCitiesReturnsCityCollection(): void
+    {
+        $response = $this->buildExampleResponse();
+        $this->cityFactory->build()->willReturn(new City());
+
+        $result = $this->transformer->transformCities($response);
+
+        self::assertEquals(new CityCollection(new City(), new City()), $result);
     }
 
     /**

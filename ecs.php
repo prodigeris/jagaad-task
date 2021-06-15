@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\EasyCodingStandard\ValueObject\Option;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
@@ -21,6 +22,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         __DIR__ . '/src',
         __DIR__ . '/bin',
         __DIR__ . '/tests',
+    ]);
+
+    $parameters->set(Option::SKIP, [
+        PhpUnitStrictFixer::class => [__DIR__ . '/tests/Unit/Components/Musement/Transformer/ResponseTransformerTest.php'],
     ]);
 
     // B. full sets
