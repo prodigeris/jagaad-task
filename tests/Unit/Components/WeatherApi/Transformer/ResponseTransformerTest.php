@@ -7,6 +7,7 @@ namespace Test\Unit\Components\WeatherApi\Transformer;
 use GuzzleHttp\Psr7\Response;
 use JagaadTask\Components\WeatherApi\Dto\Forecast;
 use JagaadTask\Components\WeatherApi\Dto\ForecastDay;
+use JagaadTask\Components\WeatherApi\Exception\InvalidResponseException;
 use JagaadTask\Components\WeatherApi\Transformer\ResponseTransformer;
 use JsonException;
 use PHPUnit\Framework\TestCase;
@@ -33,6 +34,12 @@ class ResponseTransformerTest extends TestCase
         $actual = $this->transformer->transformForecast($response);
 
         self::assertEquals($expected, $actual);
+    }
+
+    public function testTransformForecastShouldThrowInvalidResponseExceptionWhenJsonException(): void
+    {
+        $this->expectException(InvalidResponseException::class);
+        $this->transformer->transformForecast(new Response());
     }
 
     /**

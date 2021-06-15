@@ -67,7 +67,7 @@ class ResponseTransformerTest extends TestCase
 
         $result = $this->transformer->transformCities($response);
 
-        self::assertSame($collection, $result);
+        self::assertEquals($collection, $result);
     }
 
     /**
