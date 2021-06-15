@@ -8,8 +8,8 @@ use JagaadTask\Components\Musement\Dto\City;
 
 class CityFactory
 {
-    public function build(int $id): City
+    public function build(int $id, string $name, float $latitude, float $longitude): City
     {
-        return new City($id);
+        return new City($id, $name, $latitude, $longitude);
     }
 }

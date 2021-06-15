@@ -28,7 +28,7 @@ class ResponseTransformer
     public function transformCities(ResponseInterface $response): CityCollection
     {
         $array = $this->decodeResponse($response);
-        $cities = array_map(fn (array $city) => $this->cityFactory->build($city['id']), $array);
+        $cities = $this->buildCities($array);
 
         return new CityCollection(...$cities);
     }
@@ -50,5 +50,12 @@ class ResponseTransformer
         } catch (JsonException $e) {
             throw new InvalidResponseException($e->getMessage());
         }
+    }
+
+    protected function buildCities(array $array): array
+    {
+        return array_map(fn(array $city) => $this->cityFactory->build(
+            $city['id'], $city['name'], (float) $city['latitude'], (float) $city['longitude']
+        ), $array);
     }
 }

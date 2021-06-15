@@ -20,7 +20,20 @@ class ResponseTransformerTest extends TestCase
 
     private const ID = 1111;
 
-    private const ID2 = 2222;
+    private const ID_2 = 2222;
+
+    private const CITY_1 = 'Amsterdam';
+
+    private const CITY_2 = 'Milan';
+
+    private const LATITUDE_1 = 41.898;
+
+    private const LONGITUDE_1 = 4.9;
+
+    private const LATITUDE_2 = 45.459;
+
+    private const LONGITUDE_2 = 9.183;
+
 
     private ResponseTransformer $transformer;
 
@@ -67,10 +80,19 @@ class ResponseTransformerTest extends TestCase
             [
                 [[
                     'id' => self::ID,
+                    'name' => self::CITY_1,
+                    'latitude' => self::LATITUDE_1,
+                    'longitude' => self::LONGITUDE_1,
                 ], [
-                    'id' => self::ID2,
+                    'id' => self::ID_2,
+                    'name' => self::CITY_2,
+                    'latitude' => self::LATITUDE_2,
+                    'longitude' => self::LONGITUDE_2,
                 ]],
-                new CityCollection(new City(self::ID), new City(self::ID2)),
+                new CityCollection(
+                    new City(self::ID, self::CITY_1, self::LATITUDE_1, self::LONGITUDE_1),
+                    new City(self::ID_2, self::CITY_2, self::LATITUDE_2, self::LONGITUDE_2),
+                ),
             ],
         ];
     }
