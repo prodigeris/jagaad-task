@@ -16,3 +16,9 @@ $loader->load(__DIR__ . '/../services.yaml');
 
 
 $containerBuilder->compile();
+
+$client = $containerBuilder->get(\JagaadTask\Components\WeatherApi\Client::class);
+
+$forecast = $client->getForecast(new \JagaadTask\Components\WeatherApi\ValueObject\Coordinates(52.374, 4.9), 2);
+
+print_r($forecast->getIterator());

@@ -12,6 +12,14 @@ services:
   JagaadTask\Components\Musement\Transformer\ResponseTransformer:
   JagaadTask\Components\Musement\Factory\CityFactory:
 
+  JagaadTask\Components\WeatherApi\Client:
+    public: true
+    arguments:
+      $baseUri: '%WEATHER_API_BASE_URI%'
+      $key: '%WEATHER_API_KEY%'
+
+  JagaadTask\Components\WeatherApi\Transformer\ResponseTransformer:
+
   GuzzleHttp\ClientInterface:
     class: GuzzleHttp\Client
 

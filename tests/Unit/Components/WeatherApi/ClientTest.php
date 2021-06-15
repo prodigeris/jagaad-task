@@ -7,6 +7,8 @@ namespace Test\Unit\Components\WeatherApi;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 use JagaadTask\Components\WeatherApi\Client;
+use JagaadTask\Components\WeatherApi\Dto\Forecast;
+use JagaadTask\Components\WeatherApi\Transformer\ResponseTransformer;
 use JagaadTask\Components\WeatherApi\ValueObject\Coordinates;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -40,21 +42,27 @@ class ClientTest extends TestCase
 
     private Coordinates $coordinates;
 
+    /**
+     * @var ResponseTransformer|ObjectProphecy
+     */
+    private $transformer;
+
+    private Forecast $forecast;
+
     protected function setUp(): void
     {
         $this->http = $this->prophesize(ClientInterface::class);
+        $this->transformer = $this->prophesize(ResponseTransformer::class);
 
-        $this->client = new Client($this->http->reveal(), self::BASE_URI, self::API_KEY);
+        $this->buildSut();
 
         $this->coordinates = new Coordinates(self::LATITUDE, self::LONGITUDE);
+
+        $this->stubMethods();
     }
 
     public function testGetForecastShouldRequestCorrectEndpoint(): void
     {
-        $this->http
-            ->request(Argument::cetera())
-            ->willReturn(new Response());
-
         $this->client->getForecast($this->coordinates, self::DAYS);
 
         $this
@@ -65,15 +73,28 @@ class ClientTest extends TestCase
 
     public function testGetForecastReturnForecast(): void
     {
+        $actual = $this->client->getForecast($this->coordinates, self::DAYS);
+
+        self::assertSame($this->forecast, $actual);
+    }
+
+    protected function stubMethods(): void
+    {
         $this->http
             ->request(Argument::cetera())
             ->willReturn(new Response());
 
-        $this->client->getForecast($this->coordinates, self::DAYS);
+        $this->forecast = new Forecast();
+        $this->transformer->transformForecast(Argument::cetera())->willReturn($this->forecast);
+    }
 
-        $this
-            ->http
-            ->request(self::GET, self::FORECAST_ENDPOINT)
-            ->shouldHaveBeenCalledOnce();
+    protected function buildSut(): void
+    {
+        $this->client = new Client(
+            $this->http->reveal(),
+            $this->transformer->reveal(),
+            self::BASE_URI,
+            self::API_KEY,
+        );
     }
 }
