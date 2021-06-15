@@ -7,6 +7,9 @@ namespace Test\Unit\Components\Musement;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 use JagaadTask\Components\Musement\Client;
+use JagaadTask\Components\Musement\Dto\City;
+use JagaadTask\Components\Musement\Dto\CityCollection;
+use JagaadTask\Components\Musement\Transformer\ResponseTransformer;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -29,27 +32,57 @@ class ClientTest extends TestCase
      */
     private $http;
 
+    /**
+     * @var ResponseTransformer|ObjectProphecy
+     */
+    private $transformer;
+
+    /**
+     * @var CityCollection|City[]
+     */
+    private CityCollection $cities;
+
     protected function setUp(): void
     {
         $this->http = $this->prophesize(ClientInterface::class);
+        $this->transformer = $this->prophesize(ResponseTransformer::class);
 
         $this->client = new Client(
             $this->http->reveal(),
-            self::BASE_URI
+            $this->transformer->reveal(),
+            self::BASE_URI,
         );
+
+        $this->cities = new CityCollection();
+
+        $this->stubDefaults();
     }
 
     public function testGetCitiesShouldSendRequestToCitiesEndpoint(): void
     {
-        $this->http
-            ->request(Argument::cetera())
-            ->willReturn(new Response());
-
         $this->client->getCities();
 
         $this->http
             ->request(self::GET, self::CITIES_ENDPOINT)
             ->shouldHaveBeenCalledOnce()
             ->willReturn(new Response());
+    }
+
+    public function testGetCitiesShouldReturnCollectionOfCities(): void
+    {
+        $result = $this->client->getCities();
+
+        self::assertSame($this->cities, $result);
+    }
+
+    protected function stubDefaults(): void
+    {
+        $this->http
+            ->request(Argument::cetera())
+            ->willReturn(new Response());
+
+        $this->transformer
+            ->transformCities(Argument::any())
+            ->willReturn($this->cities);
     }
 }

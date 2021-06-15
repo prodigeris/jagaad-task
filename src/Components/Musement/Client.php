@@ -5,19 +5,23 @@ declare(strict_types=1);
 namespace JagaadTask\Components\Musement;
 
 use GuzzleHttp\ClientInterface;
+use JagaadTask\Components\Musement\Dto\City;
+use JagaadTask\Components\Musement\Dto\CityCollection;
+use JagaadTask\Components\Musement\Transformer\ResponseTransformer;
 use Psr\Http\Message\ResponseInterface;
-use Test\Unit\Components\Musement\Dto\City;
-use Test\Unit\Components\Musement\Dto\CityCollection;
 
 class Client
 {
     private ClientInterface $http;
 
+    private ResponseTransformer $transformer;
+
     private string $baseUri;
 
-    public function __construct(ClientInterface $http, string $baseUri)
+    public function __construct(ClientInterface $http, ResponseTransformer $transformer, string $baseUri)
     {
         $this->http = $http;
+        $this->transformer = $transformer;
         $this->baseUri = $baseUri;
     }
 
@@ -26,9 +30,9 @@ class Client
      */
     public function getCities(): CityCollection
     {
-        $this->sendRequest('GET', 'cities.json');
-
-        return new CityCollection();
+        return $this->transformer->transformCities(
+            $this->sendRequest('GET', 'cities.json')
+        );
     }
 
     private function getPath(string $path): string

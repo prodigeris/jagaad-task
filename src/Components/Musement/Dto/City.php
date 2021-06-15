@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Unit\Components\Musement\Dto;
+namespace JagaadTask\Components\Musement\Dto;
 
 class City
 {
