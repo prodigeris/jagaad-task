@@ -11,12 +11,12 @@ use JagaadTask\Components\WeatherApi\Client as WeatherApi;
 use JagaadTask\Components\WeatherApi\Dto\Forecast;
 use JagaadTask\Components\WeatherApi\Dto\ForecastDay;
 use JagaadTask\Components\WeatherApi\ValueObject\Coordinates;
+use JagaadTask\Domain\City\Dto\CityForecast;
 use JagaadTask\Domain\City\UseCase\FetchWeatherForMusementCitiesUseCase;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use Test\Unit\Domain\City\Dto\CityForecast;
 
 class FetchWeatherForMusementCitiesUseCaseTest extends TestCase
 {

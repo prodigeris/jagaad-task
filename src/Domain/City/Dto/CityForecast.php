@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Unit\Domain\City\Dto;
+namespace JagaadTask\Domain\City\Dto;
 
 class CityForecast
 {

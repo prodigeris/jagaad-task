@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Test\Unit\Infrastructure\Command;
 
+use JagaadTask\Domain\City\Dto\CityForecast;
 use JagaadTask\Domain\City\UseCase\FetchWeatherForMusementCitiesUseCase;
 use JagaadTask\Infrastructure\Command\RunEntrypoint;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use Test\Unit\Domain\City\Dto\CityForecast;
 
 class RunEntrypointTest extends TestCase
 {
