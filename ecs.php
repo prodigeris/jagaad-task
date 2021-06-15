@@ -27,7 +27,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set(Option::SKIP, [
         PhpUnitStrictFixer::class => [
             __DIR__ . '/tests/Unit/Components/Musement/Transformer/ResponseTransformerTest.php',
-            __DIR__ . '/tests/Unit/Components/WeatherApi/Transformer/ResponseTransformerTest.php'
+            __DIR__ . '/tests/Unit/Components/WeatherApi/Transformer/ResponseTransformerTest.php',
+            __DIR__ . '/tests/Unit/Domain/City/UseCase/FetchWeatherForMusementCitiesUseCaseTest.php',
         ],
     ]);
 

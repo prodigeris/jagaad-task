@@ -25,4 +25,10 @@ class Coordinates
     {
         return $this->longitude;
     }
+
+    public function equals(self $coordinates): bool
+    {
+        return $this->getLatitude() === $coordinates->getLatitude()
+            && $this->getLongitude() === $coordinates->getLongitude();
+    }
 }
