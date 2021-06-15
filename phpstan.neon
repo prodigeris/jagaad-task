@@ -5,3 +5,5 @@ parameters:
     tmpDir: var/cache/ecs
     level: 8
     inferPrivatePropertyTypeFromConstructor: true
+includes:
+        - vendor/jangregor/phpstan-prophecy/extension.neon
