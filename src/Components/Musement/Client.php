@@ -26,7 +26,7 @@ class Client
      */
     public function getCities(): CityCollection
     {
-        $this->sendRequest('GET', 'cities');
+        $this->sendRequest('GET', 'cities.json');
 
         return new CityCollection();
     }

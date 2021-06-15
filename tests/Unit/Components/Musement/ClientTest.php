@@ -15,7 +15,7 @@ class ClientTest extends TestCase
 {
     use ProphecyTrait;
 
-    public const CITIES_ENDPOINT = 'https://musement.sandbox/cities';
+    public const CITIES_ENDPOINT = 'https://musement.sandbox/cities.json';
 
     public const GET = 'GET';
 
@@ -38,8 +38,7 @@ class ClientTest extends TestCase
         );
     }
 
-
-    public function testShouldSendRequestToCitiesEndpoint(): void
+    public function testGetCitiesShouldSendRequestToCitiesEndpoint(): void
     {
         $this->http
             ->request(self::GET, self::CITIES_ENDPOINT)
