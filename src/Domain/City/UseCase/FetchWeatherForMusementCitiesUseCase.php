@@ -9,7 +9,7 @@ use JagaadTask\Components\Musement\Client as Musement;
 use JagaadTask\Components\WeatherApi\Client as WeatherApi;
 use JagaadTask\Components\WeatherApi\Dto\ForecastDay;
 use JagaadTask\Components\WeatherApi\ValueObject\Coordinates;
-use Test\Unit\Domain\City\Dto\CityForecast;
+use JagaadTask\Domain\City\Dto\CityForecast;
 
 class FetchWeatherForMusementCitiesUseCase
 {
