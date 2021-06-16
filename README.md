@@ -58,6 +58,17 @@ docker-compose run php ./vendor/bin/ecs
 docker-compose run php ./vendor/bin/phpstan
 ```
 
+### Step 2 - API Design
+
+`docs/openapi.yaml` contains OpenAPI specification for the
+second part of the test.
+
+`City` has many `Forecasts`.
+
+Forecast is treated as a `Model`.
+
+Four endpoints have been introduced for flexibility purposes.
+
 ## Author
 
 Arnas Kazlauskas

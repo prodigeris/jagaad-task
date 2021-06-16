@@ -1,0 +1,192 @@
+openapi: 3.1.0
+info:
+  title: Jagaad
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/api/v3/cities/{id}/forecasts/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    put:
+      summary: Update forecast for a city
+      operationId: put-api-v3-cities-id-forecasts-date
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forecast'
+              examples:
+                Example 1:
+                  value:
+                    id: 146662
+                    city_id: 3004
+                    date: '2021-06-15'
+                    condition: PARLTY_CLOUDY
+                    created_at: '2021-06-14 12:01:03'
+                    updated_at: '2021-06-15 10:22:11'
+        '422':
+          $ref: '#/components/responses/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                condition:
+                  type: string
+              required:
+                - condition
+            examples:
+              Example 1:
+                value:
+                  condition: Party cloudy
+        description: Send condition
+      description: |-
+        Updates a forecast model for a city
+
+        City <-> Forecast (one-to-many)
+  /api/v3/forecasts:
+    get:
+      summary: Get list of forecasts
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Forecast'
+              examples:
+                Example:
+                  value:
+                    - id: 146662
+                      city_id: 3004
+                      date: '2021-06-15'
+                      condition: PARLTY_CLOUDY
+                      created_at: '2021-06-14 12:01:03'
+                      updated_at: '2021-06-15 10:22:11'
+      operationId: get-api-v3-forecats
+      description: Get list of forecasts based on City and Date range
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: city_id
+          description: ID of CIty
+          required: true
+        - $ref: '#/components/parameters/date_from'
+        - $ref: '#/components/parameters/date_to'
+    parameters: []
+  '/api/v3/cities/{id}/forecasts':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Get forecast list for a city
+      tags: []
+      responses: {}
+      operationId: get-api-v3-cities-id-forecasts
+      parameters:
+        - $ref: '#/components/parameters/date_from'
+        - $ref: '#/components/parameters/date_to'
+      description: Get list of forecasts based on City and Date range
+    post:
+      summary: Create a forecast for a city
+      operationId: post-api-v3-cities-id-forecasts
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forecast'
+        '422':
+          $ref: '#/components/responses/error'
+      description: |-
+        Creates a forecast model for a city
+
+        City <-> Forecast (one-to-many)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                condition:
+                  type: string
+components:
+  schemas:
+    Forecast:
+      title: Forecast
+      type: object
+      properties:
+        id:
+          type: number
+        city_id:
+          type: number
+        date:
+          type: string
+        condition:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      examples:
+        - id: 146662
+          city_id: 3004
+          date: '2021-06-15'
+          condition: PARLTY_CLOUDY
+          created_at: '2021-06-14 12:01:03'
+          updated_at: '2021-06-15 10:22:11'
+        - id: 146667
+          city_id: 3002
+          date: '2021-06-16'
+          condition: SUNNY
+          created_at: '2021-06-15 12:01:03'
+          updated_at: '2021-06-16 10:22:11'
+      description: Forecast for a specific city and date
+  parameters:
+    date_to:
+      name: date_to
+      in: query
+      required: false
+      schema:
+        type: string
+    date_from:
+      name: date_from
+      in: query
+      required: false
+      schema:
+        type: string
+  responses:
+    error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+          examples:
+            Forecast for date already exists:
+              value:
+                error: FORECAST_CREATE_DATE_ALREADY_EXISTS
+            Forecast for date does not exist:
+              value:
+                error: FORECAST_UPDATE_DATE_NOT_EXISTS
